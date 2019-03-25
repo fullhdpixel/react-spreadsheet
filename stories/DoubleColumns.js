@@ -7,6 +7,8 @@ import './index.css'
 export const INITIAL_ROWS = 6
 export const INITIAL_COLUMNS = 4
 
+const resetHeaders = [0,1,2,3]
+
 class DoubleColumns extends React.Component {
     constructor(props) {
         super(props)
@@ -14,27 +16,20 @@ class DoubleColumns extends React.Component {
         this.state = {
             initialData: range(INITIAL_ROWS).map(() => Array(INITIAL_COLUMNS)),
             columnLabels: ["Name", "Age", "Email", "Address"],
-            droppableHeaderLabels: [1,2,3,4],
+            droppableHeaderLabels: resetHeaders.map(item => null),
             isDragging: false
         }
-    }
-
-    changeLabels = () => {
-        this.setState(({columnLabels, isDragging}) => {
-            const labels = columnLabels[0] === 1
-                ? ["Name", "Age", "Email", "Address"]
-                : [1, 2, 3, 4]
-            return {columnLabels: labels, isDragging: !isDragging}
-        })
     }
 
     onDragStart = (e, index) => {
       this.draggedItem = index
     }
+
     onDragOver = (e) => {
       e.stopPropagation()
       e.preventDefault()
     }
+
     onDrop = (e, index) => {
       this.setState(({droppableHeaderLabels}) => {
         droppableHeaderLabels[index] = this.draggedItem
@@ -42,12 +37,19 @@ class DoubleColumns extends React.Component {
       })
     }
 
+    clearColumn = (e, index) => {
+        console.info('clearColumn', index)
+        this.setState(({droppableHeaderLabels}) => {
+            droppableHeaderLabels[index] = null
+            return {droppableHeaderLabels}
+        })
+    }
+
     render() {
         const {initialData, columnLabels, droppableHeaderLabels, isDragging} = this.state
         return <React.Fragment>
-            <button onClick={() => this.changeLabels()}>Change labels</button>
             <ul>
-              {droppableHeaderLabels.map((item, index) => <li
+              {resetHeaders.map((item, index) => <li
                 key={index}
                 draggable
                 onDragStart={e => this.onDragStart(e, item)}>{item}</li>)}
@@ -61,7 +63,9 @@ class DoubleColumns extends React.Component {
               `}
               isDragging={isDragging}
               onDrop={(e, index) => this.onDrop(e, index)}
-              onDragOver={e => this.onDragOver(e)}/>
+              onDragOver={e => this.onDragOver(e)}
+              clearColumn={(e, index) => this.clearColumn(e, index)}
+              clearHeaderIconClass={'fas fa-times'}/>
         </React.Fragment>
     }
 

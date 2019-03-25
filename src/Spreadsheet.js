@@ -27,7 +27,7 @@ import * as PointSet from "./point-set";
 import * as Matrix from "./matrix";
 import * as Actions from "./actions";
 import "./Spreadsheet.css";
-import { DroppableHeaderColumn } from "./StyledComponents";
+import { DroppableHeaderColumn, ClearColumn } from "./StyledComponents";
 
 type DefaultCellType = {
   value: string | number | boolean | null
@@ -226,6 +226,8 @@ class Spreadsheet<CellType, Value> extends PureComponent<{|
       onDragOver,
       isDragging,
       droppableStyle,
+      clearColumn,
+      clearHeaderIconClass,
       columnLabels,
       DataViewer,
       getValue,
@@ -253,7 +255,12 @@ class Spreadsheet<CellType, Value> extends PureComponent<{|
                   key={index}
                   className={isDragging && 'draggable'}
                   onDragOver={e => onDragOver(e, index)}
-                  onDrop={e => onDrop(e, index)}>{column}</DroppableHeaderColumn>)}
+                  onDrop={e => onDrop(e, index)}>{column}
+                    {column && clearHeaderIconClass ?
+                        <i className={clearHeaderIconClass} onClick={e => clearColumn(e, index)}/> : null}
+                    {column && !clearHeaderIconClass ?
+                        <ClearColumn onClick={e => clearColumn(e, index)}/> : null}
+                  </DroppableHeaderColumn>)}
               </tr>
               <tr>
                 {!hideRowIndicators && !hideColumnIndicators && <th />}
