@@ -1,5 +1,5 @@
 {
-  "editor.formatOnSave": true,
-  "flow.useNPMPackagedFlow": true,
-  "flow.useLSP": true
+    "editor.formatOnSave": false,
+    "flow.useNPMPackagedFlow": true,
+    "flow.useLSP": true
 }

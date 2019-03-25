@@ -9,6 +9,7 @@ import Filter from "./Filter";
 import WithColumnLabls from "./withColumnLabels";
 import WithoutRowAndColumnIndicators from "./WithoutRowAndColumnIndicators";
 import CellCommit from "./CellCommit";
+import DoubleColumns from "./DoubleColumns";
 
 storiesOf("Spreadsheet", Spreadsheet)
   .add("Basic", () => <Basic />)
@@ -20,4 +21,5 @@ storiesOf("Spreadsheet", Spreadsheet)
   .add("Without column and row indicators", () => (
     <WithoutRowAndColumnIndicators />
   ))
-  .add("With onCellCommit event", () => <CellCommit />);
+  .add("With onCellCommit event", () => <CellCommit />)
+  .add("Double Columns", () => <DoubleColumns />)

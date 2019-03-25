@@ -27,6 +27,7 @@ import * as PointSet from "./point-set";
 import * as Matrix from "./matrix";
 import * as Actions from "./actions";
 import "./Spreadsheet.css";
+import { DroppableHeaderColumn } from "./StyledComponents";
 
 type DefaultCellType = {
   value: string | number | boolean | null
@@ -220,6 +221,11 @@ class Spreadsheet<CellType, Value> extends PureComponent<{|
       Table,
       Row,
       Cell,
+      droppableHeaderLabels,
+      onDrop,
+      onDragOver,
+      isDragging,
+      droppableStyle,
       columnLabels,
       DataViewer,
       getValue,
@@ -240,25 +246,34 @@ class Spreadsheet<CellType, Value> extends PureComponent<{|
         onMouseMove={this.handleMouseMove}
       >
         <Table>
-          <tr>
-            {!hideRowIndicators && !hideColumnIndicators && <th />}
-            {!hideColumnIndicators &&
-              range(columns).map(columnNumber =>
-                columnLabels ? (
-                  <ColumnIndicator
-                    key={columnNumber}
-                    column={columnNumber}
-                    label={
-                      columnNumber in columnLabels
-                        ? columnLabels[columnNumber]
-                        : null
-                    }
-                  />
-                ) : (
-                  <ColumnIndicator key={columnNumber} column={columnNumber} />
-                )
-              )}
-          </tr>
+              <tr>
+                {!hideRowIndicators && !hideColumnIndicators && <th />}
+                {droppableHeaderLabels.map((column, index) => <DroppableHeaderColumn
+                  droppableStyle={isDragging && droppableStyle}
+                  key={index}
+                  className={isDragging && 'draggable'}
+                  onDragOver={e => onDragOver(e, index)}
+                  onDrop={e => onDrop(e, index)}>{column}</DroppableHeaderColumn>)}
+              </tr>
+              <tr>
+                {!hideRowIndicators && !hideColumnIndicators && <th />}
+                {!hideColumnIndicators &&
+                range(columns).map(columnNumber =>
+                    columnLabels ? (
+                    <ColumnIndicator
+                        key={columnNumber}
+                        column={columnNumber}
+                        label={
+                        columnNumber in columnLabels
+                            ? columnLabels[columnNumber]
+                            : null
+                        }
+                    />
+                    ) : (
+                    <ColumnIndicator key={columnNumber} column={columnNumber} />
+                    )
+                )}
+            </tr>
           {range(rows).map(rowNumber => (
             <Row key={rowNumber}>
               {!hideRowIndicators && (
