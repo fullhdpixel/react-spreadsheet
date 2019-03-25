@@ -37,7 +37,7 @@ import * as PointSet from "./point-set";
 import * as Matrix from "./matrix";
 import * as Actions from "./actions";
 import "./Spreadsheet.css";
-import { DroppableHeaderColumn } from "./StyledComponents";
+import { DroppableHeaderColumn, ClearColumn } from "./StyledComponents";
 
 var getValue = function getValue(_ref) {
   var data = _ref.data;
@@ -210,6 +210,8 @@ function (_PureComponent) {
           _onDragOver = _this$props4.onDragOver,
           isDragging = _this$props4.isDragging,
           droppableStyle = _this$props4.droppableStyle,
+          clearColumn = _this$props4.clearColumn,
+          clearHeaderIconClass = _this$props4.clearHeaderIconClass,
           columnLabels = _this$props4.columnLabels,
           DataViewer = _this$props4.DataViewer,
           getValue = _this$props4.getValue,
@@ -237,7 +239,16 @@ function (_PureComponent) {
           onDrop: function onDrop(e) {
             return _onDrop(e, index);
           }
-        }, column);
+        }, column, column && clearHeaderIconClass ? React.createElement("i", {
+          className: clearHeaderIconClass,
+          onClick: function onClick(e) {
+            return clearColumn(e, index);
+          }
+        }) : null, column && !clearHeaderIconClass ? React.createElement(ClearColumn, {
+          onClick: function onClick(e) {
+            return clearColumn(e, index);
+          }
+        }) : null);
       })), React.createElement("tr", null, !hideRowIndicators && !hideColumnIndicators && React.createElement("th", null), !hideColumnIndicators && range(columns).map(function (columnNumber) {
         return columnLabels ? React.createElement(ColumnIndicator, {
           key: columnNumber,
