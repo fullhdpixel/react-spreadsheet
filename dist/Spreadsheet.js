@@ -212,6 +212,8 @@ function (_PureComponent) {
           droppableStyle = _this$props4.droppableStyle,
           clearColumn = _this$props4.clearColumn,
           clearHeaderIconClass = _this$props4.clearHeaderIconClass,
+          onDragHeaderStart = _this$props4.onDragHeaderStart,
+          onDragHeaderEnd = _this$props4.onDragHeaderEnd,
           columnLabels = _this$props4.columnLabels,
           DataViewer = _this$props4.DataViewer,
           getValue = _this$props4.getValue,
@@ -228,8 +230,9 @@ function (_PureComponent) {
         onKeyPress: onKeyPress,
         onKeyDown: this.handleKeyDown,
         onMouseMove: this.handleMouseMove
-      }, React.createElement(Table, null, React.createElement("tr", null, !hideRowIndicators && !hideColumnIndicators && React.createElement("th", null), droppableHeaderLabels.map(function (column, index) {
+      }, React.createElement(Table, null, React.createElement("tr", null, !hideRowIndicators && !hideColumnIndicators && droppableHeaderLabels && React.createElement("th", null), droppableHeaderLabels && droppableHeaderLabels.map(function (column, index) {
         return React.createElement(DroppableHeaderColumn, {
+          draggable: true,
           droppableStyle: isDragging && droppableStyle,
           key: index,
           className: isDragging && 'draggable',
