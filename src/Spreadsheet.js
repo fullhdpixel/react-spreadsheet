@@ -228,6 +228,8 @@ class Spreadsheet<CellType, Value> extends PureComponent<{|
       droppableStyle,
       clearColumn,
       clearHeaderIconClass,
+      onDragHeaderStart,
+      onDragHeaderEnd,
       columnLabels,
       DataViewer,
       getValue,
@@ -251,6 +253,7 @@ class Spreadsheet<CellType, Value> extends PureComponent<{|
               <tr>
                 {!hideRowIndicators && !hideColumnIndicators && <th />}
                 {droppableHeaderLabels.map((column, index) => <DroppableHeaderColumn
+                  draggable
                   droppableStyle={isDragging && droppableStyle}
                   key={index}
                   className={isDragging && 'draggable'}

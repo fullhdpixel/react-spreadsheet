@@ -32,6 +32,11 @@ class DoubleColumns extends React.Component {
 
     onDrop = (e, index) => {
       this.setState(({droppableHeaderLabels}) => {
+        // check if already dropped
+        const existingDraggedIndex = droppableHeaderLabels.indexOf(this.draggedItem)
+        if (existingDraggedIndex > -1) {
+          droppableHeaderLabels[existingDraggedIndex] = null
+        }
         droppableHeaderLabels[index] = this.draggedItem
         return {droppableHeaderLabels}
       })
@@ -65,7 +70,8 @@ class DoubleColumns extends React.Component {
               onDrop={(e, index) => this.onDrop(e, index)}
               onDragOver={e => this.onDragOver(e)}
               clearColumn={(e, index) => this.clearColumn(e, index)}
-              clearHeaderIconClass={'fas fa-times'}/>
+              clearHeaderIconClass={'fas fa-times'}
+            />
         </React.Fragment>
     }
 
