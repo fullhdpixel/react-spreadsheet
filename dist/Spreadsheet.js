@@ -18,6 +18,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
 import React, { PureComponent } from "react";
 import devtools from "unistore/devtools";
 import { connect } from "unistore/react";
@@ -46,8 +48,10 @@ var getValue = function getValue(_ref) {
 
 var ColumnIndicator = function ColumnIndicator(_ref2) {
   var column = _ref2.column,
-      label = _ref2.label;
-  return label !== undefined ? React.createElement("th", null, label) : React.createElement("th", null, columnIndexToLabel(column));
+      label = _ref2.label,
+      draggableProps = _objectWithoutProperties(_ref2, ["column", "label"]);
+
+  return label !== undefined ? React.createElement(DroppableHeaderColumn, draggableProps, label) : React.createElement(DroppableHeaderColumn, draggableProps, columnIndexToLabel(column));
 };
 
 var RowIndicator = function RowIndicator(_ref3) {
@@ -206,8 +210,8 @@ function (_PureComponent) {
           Row = _this$props4.Row,
           Cell = _this$props4.Cell,
           droppableHeaderLabels = _this$props4.droppableHeaderLabels,
-          _onDrop = _this$props4.onDrop,
-          _onDragOver = _this$props4.onDragOver,
+          onDrop = _this$props4.onDrop,
+          onDragOver = _this$props4.onDragOver,
           isDragging = _this$props4.isDragging,
           droppableStyle = _this$props4.droppableStyle,
           clearColumn = _this$props4.clearColumn,
@@ -236,12 +240,32 @@ function (_PureComponent) {
           droppableStyle: isDragging && droppableStyle,
           key: index,
           className: isDragging && 'draggable',
-          onDragOver: function onDragOver(e) {
-            return _onDragOver(e, index);
-          },
-          onDrop: function onDrop(e) {
-            return _onDrop(e, index);
-          }
+          onDragOver: function (_onDragOver) {
+            function onDragOver(_x) {
+              return _onDragOver.apply(this, arguments);
+            }
+
+            onDragOver.toString = function () {
+              return _onDragOver.toString();
+            };
+
+            return onDragOver;
+          }(function (e) {
+            return onDragOver(e, index);
+          }),
+          onDrop: function (_onDrop) {
+            function onDrop(_x2) {
+              return _onDrop.apply(this, arguments);
+            }
+
+            onDrop.toString = function () {
+              return _onDrop.toString();
+            };
+
+            return onDrop;
+          }(function (e) {
+            return onDrop(e, index);
+          })
         }, column, column && clearHeaderIconClass ? React.createElement("i", {
           className: clearHeaderIconClass,
           onClick: function onClick(e) {
@@ -252,8 +276,36 @@ function (_PureComponent) {
             return clearColumn(e, index);
           }
         }) : null);
-      })), React.createElement("tr", null, !hideRowIndicators && !hideColumnIndicators && React.createElement("th", null), !hideColumnIndicators && range(columns).map(function (columnNumber) {
+      })), React.createElement("tr", null, !hideRowIndicators && !hideColumnIndicators && React.createElement("th", null), !hideColumnIndicators && range(columns).map(function (columnNumber, index) {
         return columnLabels ? React.createElement(ColumnIndicator, {
+          draggable: !!droppableHeaderLabels,
+          droppableStyle: isDragging && droppableStyle,
+          onDragOver: function (_onDragOver2) {
+            function onDragOver(_x3) {
+              return _onDragOver2.apply(this, arguments);
+            }
+
+            onDragOver.toString = function () {
+              return _onDragOver2.toString();
+            };
+
+            return onDragOver;
+          }(function (e) {
+            return onDragOver(e, index);
+          }),
+          onDrop: function (_onDrop2) {
+            function onDrop(_x4) {
+              return _onDrop2.apply(this, arguments);
+            }
+
+            onDrop.toString = function () {
+              return _onDrop2.toString();
+            };
+
+            return onDrop;
+          }(function (e) {
+            return onDrop(e, index);
+          }),
           key: columnNumber,
           column: columnNumber,
           label: columnNumber in columnLabels ? columnLabels[columnNumber] : null
