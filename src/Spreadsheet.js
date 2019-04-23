@@ -70,15 +70,20 @@ type State = {|
 
 type ColumnIndicatorProps = {
   column: number,
-  label?: string | null
+  label?: string | null,
+  draggable: bool,
+  droppableStyle: Object,
+  onDrop: Function,
+  onDragOver: Function
 };
 
-const ColumnIndicator = ({ column, label }: ColumnIndicatorProps) =>
-  label !== undefined ? (
-    <th>{label}</th>
+const ColumnIndicator = ({ column, label, ...draggableProps }: ColumnIndicatorProps) => {
+    return label !== undefined ? (
+    <DroppableHeaderColumn {...draggableProps}>{label}</DroppableHeaderColumn>
   ) : (
-    <th>{columnIndexToLabel(column)}</th>
+    <DroppableHeaderColumn {...draggableProps}>{columnIndexToLabel(column)}</DroppableHeaderColumn>
   );
+}
 
 const RowIndicator = ({ row }) => <th>{row + 1}</th>;
 
@@ -268,9 +273,13 @@ class Spreadsheet<CellType, Value> extends PureComponent<{|
               <tr>
                 {!hideRowIndicators && !hideColumnIndicators && <th />}
                 {!hideColumnIndicators &&
-                range(columns).map(columnNumber =>
+                range(columns).map((columnNumber, index) =>
                     columnLabels ? (
-                    <ColumnIndicator
+                    <ColumnIndicator 
+                        draggable={!!droppableHeaderLabels}
+                        droppableStyle={isDragging && droppableStyle}
+                        onDragOver={e => onDragOver(e, index)}
+                        onDrop={e => onDrop(e, index)}
                         key={columnNumber}
                         column={columnNumber}
                         label={

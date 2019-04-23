@@ -66,7 +66,7 @@ class DoubleColumns extends React.Component {
               droppableStyle={`
                 background: aliceblue;
               `}
-              isDragging={isDragging}
+              isDragging={true}
               onDrop={(e, index) => this.onDrop(e, index)}
               onDragOver={e => this.onDragOver(e)}
               clearColumn={(e, index) => this.clearColumn(e, index)}
